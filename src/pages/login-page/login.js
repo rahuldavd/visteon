@@ -6,7 +6,6 @@ function LoginPage() {
     let navigateState = useNavigate();
     let navigateTo = "/details-page";
     const signInClick = () => {
-        console.log("sign in clicked");
         navigateState(navigateTo);
     }
     return(

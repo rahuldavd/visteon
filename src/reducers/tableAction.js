@@ -1,42 +1,33 @@
 import {
     EDIT_LIST,
     DELETE_LIST,
-    ADD_LIST
+    ADD_LIST,
+    TO_EDIT_LIST
   } from '../constants/ActionTypes';
 
-const initialState = [
-    {
-        text: 'Use Redux',
-        completed: false,
-        id: 0
-    }
-]
+const initialState = [];
 
 export default function listAction(state = initialState, action) {
     switch (action.type) {
+        case TO_EDIT_LIST:
+            return [
+                ...action.payload
+            ]
         case EDIT_LIST:
-        return [
-            ...state,
-            {
-            id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
-            completed: false,
-            text: action.text
-            }
-        ]
-
+            return [
+                action.payload
+            ]
         case DELETE_LIST:
-        return state.filter(todo =>
-            todo.id !== action.id
-        )
-
+            return state.filter(todo =>
+                todo.id !== action.id
+            )
         case ADD_LIST:
-        return state.map(todo =>
-            todo.id === action.id ?
-            { ...todo, text: action.text } :
-            todo
-        )
-
+            return state.map(todo =>
+                todo.id === action.id ?
+                { ...todo, text: action.text } :
+                todo
+            )
         default:
-        return state
+            return state
     }
 }

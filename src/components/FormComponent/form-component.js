@@ -4,10 +4,10 @@ import ButtonSection from './button-section';
 
 function FormComponent(props) {
     return(
-        <div className="Login">
+        <div className="Login" style={{width: '100%', margin: '30px auto', justifyContent: 'center', display: 'inline-grid'}}>
             <FormControl>
                 <InputLabel htmlFor="email-input">Email address</InputLabel>
-                <Input id="email-input" />
+                <Input id="email-input" type="email" />
                 <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
             </FormControl>
             <FormControl>

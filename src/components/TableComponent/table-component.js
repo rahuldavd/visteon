@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useDispatch } from 'react-redux';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -29,44 +30,51 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 function TableComponent() {
+    const dispatch = useDispatch();
     let navigateState = useNavigate();
-    let navigateTo = "/details-page";
-    // const signInClick = () => {
-    //     console.log("sign in clicked");
-    //     navigateState(navigateTo);
-    // }
+    let navigateTo = "/edit-details-page";
+
+    function createData(slno, firstName, lastName, img) {
+        return { slno, firstName, lastName, img };
+    }
+
+    const rows = [
+    createData('1', 'FirstName1', 'LastName1', <img src="../../assets/icons/edit.png" alt="" height="20" width="20" />),
+    createData('2', 'FirstName2', 'LastName2', <img src="../../assets/icons/edit.png" alt="" height="20" width="20" />),
+    createData('3', 'FirstName3', 'LastName3', <img src="../../assets/icons/edit.png" alt="" height="20" width="20" />),
+    createData('4', 'FirstName4', 'LastName4', <img src="../../assets/icons/edit.png" alt="" height="20" width="20" />),
+    ];
+    const editRowElement = (clickedId) => {
+        let selected = rows.filter(item => item.slno == clickedId);
+        dispatch({
+            type: 'TO_EDIT_LIST',
+            payload: selected
+        });
+        navigateState(navigateTo);
+    }
     return(
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
-                <TableRow>
-                    <StyledTableCell>Id</StyledTableCell>
-                    <StyledTableCell align="right">First Name</StyledTableCell>
-                    <StyledTableCell align="right">Last Name</StyledTableCell>
-                </TableRow>
+                    <TableRow>
+                        <StyledTableCell>Id</StyledTableCell>
+                        <StyledTableCell align="right">First Name</StyledTableCell>
+                        <StyledTableCell align="right">Last Name</StyledTableCell>
+                        <StyledTableCell align="right">Edit</StyledTableCell>
+                    </TableRow>
                 </TableHead>
                 <TableBody>
-                {rows.map((row) => (
-                    <StyledTableRow key={row.name}>
-                    <StyledTableCell component="th" scope="row">
-                        {row.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                    <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                    </StyledTableRow>
-                ))}
+                    {rows.map((row) => (
+                        <StyledTableRow key={row.slno}>
+                            <StyledTableCell component="th" scope="row">
+                                {row.slno}
+                            </StyledTableCell>
+                            <StyledTableCell align="right">{row.firstName}</StyledTableCell>
+                            <StyledTableCell align="right">{row.lastName}</StyledTableCell>
+                            <StyledTableCell align="right" onClick={() => {editRowElement(row.slno)}}>{row.img}</StyledTableCell>
+                        </StyledTableRow>
+                    ))}
                 </TableBody>
             </Table>
         </TableContainer>
